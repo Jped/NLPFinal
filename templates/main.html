@@ -1,0 +1,55 @@
+<doctype !html>
+<html>
+<head>
+  <title>NLP Spell Check</title>
+  <style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+  <h1>Let's Check Your Spelling! </h1>
+  <form method="post">
+  <textarea id="essayBox" rows=5 style="width:500px" name="content"></textarea>
+  <br>
+  <input type="submit" value= "Check!">
+</form>
+{% if s %}
+    {{s.sentence}}
+    <table>
+      <tr>
+        <th>Spelling Mistake</th>
+        <th>Unigram Suggestion</th>
+        <th>Bigram Suggestion</th>
+      </tr>
+        {% for item in s.corrections %}
+          <tr>
+            <td style="color:red"> {{item}} </td>
+            {%if s.corrections[item].unigram%}
+            <td> {{s.corrections[item].unigram.0.0}} </td>
+            {%endif%}
+            {%if s.corrections[item].bigram%}
+            <td> {{s.corrections[item].bigram.0.0}} </td>
+            {%endif%}
+          </tr>
+       {% endfor %}
+    </table>
+    <br>
+    <table>
+      <tr>
+        <th>Spelling Suggestion</th>
+        <th>Bigram Suggestion</th>
+      </tr>
+        {% for item in s.suggestions %}
+          <tr>
+            <td style="color:#CCCC00"> {{item}} </td>
+            {%if s.suggestions[item].suggestions %}
+            <td> {{s.suggestions[item].suggestions.0.0}} </td>
+            {%endif %}
+          </tr>
+       {% endfor %}
+    </table>
+{% endif %}
+</body>
+</html>
