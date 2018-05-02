@@ -78,11 +78,15 @@ def findEdits2(word):
         return edits
 
 def findPossibleEdits(word):
-     distance1 = findEdits2(word)
-     distance2 = set()
-     for word in distance1:
-         distance2 = distance2.union(findEdits(word))
-     return distance2
+     d1        = findEdits(word)
+     if d1:
+         return d1
+    else:
+         distance1 = findEdits2(word)
+         distance2 = set()
+         for word in distance1:
+             distance2 = distance2.union(findEdits(word))
+         return distance2
 
 
 # In[11]:
