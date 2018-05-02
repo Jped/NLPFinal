@@ -54,14 +54,35 @@ def findEdits(word):
 
 
 # In[3]:
-
+def findEdits2(word):
+        edits   = set()
+        letters = 'abcdefghijklmnopqrstuvwxyz'
+        spliced = [(word[:i],word[i:]) for i in xrange(len(word))]
+        for sp in spliced:
+            #deletions
+            sp0 = sp[0]
+            sp1 = sp[1]
+            deletion = sp0+sp1[1:]
+            edits.add(deletion)
+            #transposition
+            if len(sp1)>1:
+                transposition = sp0 + sp1[1] + sp1[0] + sp1[2:]
+                edits.add(transposition)
+            for l in letters:
+                #insertions
+                insertion = sp0+l+sp1
+                edits.add(insertion)
+                #substitutions
+                substitute = sp0 + l +sp1[1:]
+                edits.add(substitute)
+        return edits
 
 def findPossibleEdits(word):
-     distance1 = findEdits(word)
+     distance1 = findEdits2(word)
      distance2 = set()
      for word in distance1:
          distance2 = distance2.union(findEdits(word))
-     return distance1.union(distance2)
+     return distance2
 
 
 # In[11]:
@@ -115,7 +136,9 @@ def check(string):
             preword=""
             postword=""
             if (i-1)>=0:
-                preword = re.match('\w+', (s[i-1]).lower()).group(0)
+                preword = re.match('\w+', (s[i-1]).lower())
+                if preword:
+                    preword = preword.group(0)
             if (i+1)<lens:
                 postword = re.match('\w+', (s[i+1]).lower())
                 if postword:
